@@ -23,7 +23,7 @@ O Projeto Algoritmo de Karatsuba implementa o algoritmo de Karatsuba em Python p
 X * Y = (a * 10^(2m)) + ((b - a - c) * 10^m) + c
 ```
 
-### Código Implementado
+### Código Implementado(Explicação Linha por Linha)
 O código está implementado no arquivo `main.py` e segue a estrutura:
 
 ```python
@@ -64,7 +64,7 @@ def karatsuba(x, y):
 ## Como Executar o Projeto
 
 ### Requisitos
-- Python 3.x instalado
+- Python 3.x 
 
 ### Passos para execução
 1. Clone este repositório:
@@ -83,44 +83,54 @@ def karatsuba(x, y):
 ## Relarório Técnico
 
 ### Complexidade Ciclomática
-A complexidade ciclomática mede a quantidade de caminhos independentes no código. O grafo de fluxo de controle inclui:
-- Nós representando chamadas recursivas e operações matemáticas.
-- Arestas ligando os nós conforme o fluxo do algoritmo.
+A complexidade ciclomática é uma métrica que avalia o número de caminhos independentes existentes no código, ajudando a identificar o nível de ramificação e possíveis cenários de teste necessários.
 
-![// grafo //](Grafo.png)
+No caso do algoritmo de Karatsuba implementado, o fluxo de controle pode ser representado por nós (instruções) e arestas (ligações entre instruções):
+- (Nó 1) def karatsuba(x, y):
+- (Nó 2) if x < 10 or y < 10:
+- (Nó 3) return x * y
+- (Nó 4) n = max(len(str(x)), len(str(y)))
+- (Nó 5) m = n // 2
+- (Nó 6) high_x, low_x = divmod(x, 10**m)
+- (Nó 7) high_y, low_y = divmod(y, 10**m)
+- (Nó 8) z0 = karatsuba(low_x, low_y)
+- (Nó 9) z1 = karatsuba((low_x + high_x), (low_y + high_y))
+- (Nó 10) z2 = karatsuba(high_x, high_y)
+- (Nó 11) return (z2 * 10**(2*m)) + ((z1 - z2 - z0) * 10**m) + z0
 
-- (Nó 1) = def karatsuba(x: int, y: int) -> int:
-- (Nó 2) = if min(x, y) < 10:
-- (Nó 3) = return x * y
-- (Nó 4) = n = max(len(str(x)), len(str(y)))
-- (Nó 5) = m = n // 2  
-- (Nó 6) = high_x, low_x = divmod(x, 10**m)
-- (Nó 7) = high_y, low_y = divmod(y, 10**m)
-- (Nó 8) = p1 = karatsuba(low_x, low_y)
-- (Nó 9) = p2 = karatsuba(high_x, high_y)
-- (Nó 10) = p3 = karatsuba(low_x + high_x, low_y + high_y)
-- (Nó 11) = return (p2 * 10**(2 * m)) + ((p3 - p2 - p1) * 10**m) + p1
-
-A fórmula utilizada é:
-\[ M = E - N + 2P \]
-Onde:
-- `E`: Número de arestas do grafo. 
-- `N`: Número de nós.
-- `P`: Número de componentes conexos (1 para um único programa).
-
-\[ M = 13 - 11 + 2(1) \]
-
-O cálculo para este algoritmo resultou em uma complexidade ciclomática de **4**, indicando um fluxo de controle simples e bem estruturado.
+Fórmula:
+```bash
+M = E - N + 2P
+```
+- E = número de arestas do grafo (13)
+- N = número de nós (11)
+- P = número de componentes conexos (1, já que o programa é único)
+```bash
+M = 13 - 11 + 2(1) = 4
+```
+Portanto, a complexidade ciclomática é 4, mostrando que o código possui poucos caminhos independentes, com estrutura clara e baixa probabilidade de erros relacionados a fluxo.
 
 ### Complexidade Assintótica
 A complexidade do algoritmo é:
-- **Melhor caso**: O(1)
-- **Caso médio**: O(n^1.58)
-- **Pior caso**: O(n^1.58)
+- Melhor caso: O(1)
+- Caso médio: O(n^1.58)
+- Pior caso: O(n^1.58)
 
-Essa complexidade é derivada da relação de recorrência:
-\[ T(n) = 3T(n/2) + O(n) \]
-Que, ao resolver pelo método mestre, resulta em O(n^log2(3)), aproximadamente O(n^1.58).
+A recorrência que descreve o algoritmo é:
+```bash
+T(n) = 3T(n/2) + O(n)
+```
+
+Pelo Teorema Mestre, obtemos:
+```bash
+T(n) = O(n^{\log_2 3}) 
+```
+que é aproximadamente:
+```bash
+O(n^{1.58})
+```
 
 ## Conclusão
-O algoritmo de Karatsuba é uma alternativa eficiente à multiplicação tradicional, especialmente para números grandes. Sua complexidade reduzida o torna uma escolha viável em aplicações que exigem operações matemáticas intensivas. Embora tenha um overhead inicial devido à recursão, seu desempenho melhora significativamente à medida que os números aumentam. Assim, ele é amplamente utilizado em computação científica, criptografia e outros domínios que exigem manipulação de grandes números inteiros.
+O algoritmo de Karatsuba surge como uma alternativa mais rápida em relação à multiplicação tradicional, principalmente quando lidamos com números muito grandes. Sua complexidade reduzida permite otimizar cálculos intensivos, tornando-o bastante útil em áreas que demandam alto desempenho, como criptografia, computação científica e processamento de grandes inteiros. Apesar de apresentar um custo inicial maior devido ao uso de recursão, seu verdadeiro ganho aparece à medida que os números envolvidos crescem, superando os métodos convencionais.
+
+Com o Projeto Algoritmo de Karatsuba, foi possível demonstrar na prática o motivo de sua eficiência: ao comparar os resultados com a multiplicação tradicional, ficou evidente que o algoritmo de Karatsuba realiza menos operações e entrega tempos de execução mais curtos para entradas maiores, comprovando sua relevância em cenários reais onde desempenho é essencial.
